@@ -11,7 +11,7 @@ namespace ImageGalleryProject.Models
 
         public string ImagePath { get; set; }
 
-        public string CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
 
         public Category Category { get; set; } = new Category();

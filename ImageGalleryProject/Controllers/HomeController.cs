@@ -1,5 +1,9 @@
-﻿using ImageGalleryProject.Models;
+﻿using AutoMapper;
+using ImageGalleryProject.Infrastructure;
+using ImageGalleryProject.Models;
+using ImageGalleryProject.ViewModels.MediaViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -11,18 +15,24 @@ namespace ImageGalleryProject.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _logger = logger;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-
         public IActionResult Index()
         {
-            return View();
+            var model = _unitOfWork.MediaRepo.GetAll();
+            var vm = _mapper.Map<List<MediaViewModel>>(model);
+            return View(vm);
         }
 
+
+
+    
         public IActionResult Privacy()
         {
             return View();
